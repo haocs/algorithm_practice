@@ -1,6 +1,7 @@
 """
 min-heap is a binary tree that root value is no greater than its left or right child.
 starting from 0 and l = 2 * i + 1, r = 2 * i + 2
+It's better to make heap a set of functions
 """
 
 import unittest

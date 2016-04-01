@@ -2,7 +2,7 @@ import unittest
 import time
 import random
 
-from heap import Heap
+from structures.heap import Heap
 
 class Sort():
     # assume ascending
