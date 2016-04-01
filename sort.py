@@ -2,6 +2,8 @@ import unittest
 import time
 import random
 
+from heap import Heap
+
 class Sort():
     # assume ascending
     def _swap(self, arr, i, j):
@@ -102,6 +104,16 @@ class Sort():
         quicksort(arr, 0, len(arr)-1)
         return arr
 
+    def heap_sort(self, unsorted_arr):
+        arr = unsorted_arr[::]
+        arr = Heap.build_heap(arr)
+        res = []
+        while len(arr) > 0:
+           res.append(arr[0])
+           Heap.swap(arr, 0, len(arr) - 1)
+           arr = arr[:-1]
+
+        return arr
 
 def profile(loop):
     arr = [int(random.random() * 1000) for x in range(0, 500)]
@@ -109,6 +121,11 @@ def profile(loop):
 
     s = Sort()
     mills = 10 ** 6
+    start = time.time() * mills
+    for i in range(0, loop):
+        s.selection_sort(arr)
+    print(str(time.time() * mills - start))
+
     start = time.time() * mills
     for i in range(0, loop):
         s.insertion_sort(arr)
@@ -127,6 +144,11 @@ def profile(loop):
     start = time.time() * mills
     for i in range(0, loop):
         s.quick_sort(arr)
+    print(str(time.time() * mills - start))
+
+    start = time.time() * mills
+    for i in range(0, loop):
+        s.heap_sort(arr)
     print(str(time.time() * mills - start))
 
 
@@ -159,7 +181,12 @@ class Test(unittest.TestCase):
         s = Sort()
         self.assertEqual(sorted(arr), s.quick_sort(arr))
 
+    def test_heap_sort(self):
+        arr = [1, 2, 4, 7, 6, 3, 3, -3, 3, 3, 5,4,54,3,345,7,22,33,33,44]
+        s = Sort()
+        self.assertEqual(sorted(arr), s.heap_sort(arr))
+
 if __name__ == '__main__':
-    unittest.main()
-    # profile(100)
+    # unittest.main()
+    profile(100)
 
