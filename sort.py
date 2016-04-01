@@ -112,8 +112,8 @@ class Sort():
            res.append(arr[0])
            Heap.swap(arr, 0, len(arr) - 1)
            arr = arr[:-1]
-
-        return arr
+           Heap.heapify(arr, 0)
+        return res
 
 def profile(loop):
     arr = [int(random.random() * 1000) for x in range(0, 500)]

@@ -1,10 +1,6 @@
 """
 min-heap is a binary tree that root value is no greater than its left or right child.
-
-heap interface:
-    insert()
-    heapify()
-    pop()
+starting from 0 and l = 2 * i + 1, r = 2 * i + 2
 """
 
 import unittest
@@ -12,6 +8,12 @@ import random
 import time
 
 class Heap():
+
+    # build_heap takes O(N) time
+    # 1. for a binary tree: leaf# : node# = 2**k : 2**k - 1, thus starting from
+    # length//2 to 0 only heapify nodes and skip leaves.
+    # 2. Since heapify is O(logN) from level 0 to level k: (2^0 * logk) + (2^1 * (logk-2))
+    # + (2^2 * (logk-3)) + ... + (2^k * 1) == O(N)
     @classmethod
     def build_heap(cls,arr):
         length = len(arr)
@@ -19,6 +21,7 @@ class Heap():
             Heap.heapify(arr, i)
         return arr
 
+    # Heapify takes O(logN) time
     @classmethod
     def heapify(cls, arr, i):
         length = len(arr)
@@ -33,9 +36,6 @@ class Heap():
             Heap.swap(arr, i, min)
             Heap.heapify(arr, min)
 
-    @classmethod
-    def parent(cls, arr, i):
-        pass
     @classmethod
     def left_child(cls, i):
         return 2 * i + 1
@@ -57,7 +57,7 @@ class Test(unittest.TestCase):
     def test_heap_insert(self):
         arr = [x for x in range(10, -1, -1)]
         arr = Heap.build_heap(arr)
-        self.assertEqual([0, 1, 5, 4, 2, 9, 6, 10, 7, 8, 3], arr)
+        self.assertEqual([0, 1, 4, 2, 6, 5, 8, 3, 7, 9, 10], arr)
 
 
 if __name__ == '__main__':
