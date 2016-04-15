@@ -187,6 +187,6 @@ class Test(unittest.TestCase):
         self.assertEqual(sorted(arr), s.heap_sort(arr))
 
 if __name__ == '__main__':
-    # unittest.main()
-    profile(100)
+    unittest.main()
+    # profile(100)
 

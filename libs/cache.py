@@ -11,8 +11,9 @@ _current_time_ms = lambda: int(round(time.time() * 1000))
 Doublelinked Cache node
 """
 class CacheNode(object):
-    def __init__(self, key, val, valid_time_ms):
-        self.auto_expiring = valid_time_ms if valid_time_ms else False
+    def __init__(self, key, val, valid_time_ms=0):
+        # if valid_time_ms is 0 disable auto-expiring
+        self.auto_expiring = True if valid_time_ms else False
         self.expiring_time = valid_time_ms + _current_time_ms()
         self.key = key
         self.val = val
@@ -21,19 +22,19 @@ class CacheNode(object):
 
     def is_expired(self):
         return self.auto_expiring and \
-            _current_time_ms() < self.expiring_time
+            _current_time_ms() > self.expiring_time
 
 
 class Cache(object):
     """
     A time based auto expiring LRU cache implementation
     """
-    def __init__(self, max_cap=0, expiring_time=0):
+    def __init__(self, max_cap, expiring_time=0):
         self.expiring_time_unit_ms = expiring_time
         self.max_cap = max_cap
         self.cache_ref = {}
-        self.cache_head = CacheNode('head', 0, 0)
-        self.cache_tail = CacheNode('tail', 0, 0)
+        self.cache_head = CacheNode('head', 0)
+        self.cache_tail = CacheNode('tail', 0)
         # linked cache
         self.cache_head.right = self.cache_tail
         self.cache_tail.left = self.cache_head
@@ -99,23 +100,30 @@ class Cache(object):
 
 
 class Test(unittest.TestCase):
-    def cache_test(self):
+
+    def test_cache(self):
         c1 = Cache(5, 1000 * 5)
+        # without auto-expiring
         c2 = Cache(100, 0)
         for i in range(1000):
             c1[str(random.randint(1,10))] = i
             c2[str(random.randint(1,10))] = i
+        for i in c1.cache_ref.keys():
+            c1[i]
+        for i in c2.cache_ref.keys():
+            c2[i]
+        # cache should be valid
         self.assertEqual(5, len(c1))
-        self.assertEqual(5, len(c2))
-        time.time(10)
+        self.assertEqual(10, len(c2))
+        time.sleep(5)
         self.assertEqual(5, len(c1))
-        self.assertEqual(5, len(c2))
+        self.assertEqual(10, len(c2))
         for i in c1.cache_ref.keys():
             c1[i]
         for i in c2.cache_ref.keys():
             c2[i]
         self.assertEqual(0, len(c1))
-        self.assertEqual(5, len(c2))
+        self.assertEqual(10, len(c2))
 
 
 if __name__ == '__main__':
