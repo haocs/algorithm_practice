@@ -1,6 +1,14 @@
 *.pyc
+.env/
 
 tmp/
 
+# vim swap
+*.swp
+
 # VS
 .vs/
+
+# pychar
+.idea/
+

@@ -118,7 +118,7 @@ class Test(unittest.TestCase):
         time.sleep(5)
         self.assertEqual(5, len(c1))
         self.assertEqual(10, len(c2))
-        for i in c1.cache_ref.keys():
+        for i in list(c1.cache_ref.keys()):
             c1[i]
         for i in c2.cache_ref.keys():
             c2[i]
