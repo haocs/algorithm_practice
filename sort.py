@@ -41,7 +41,7 @@ class Sort():
                     while j > i and arr[j] < arr[j - h]:
                         self._swap(arr, j, j-h)
                         j -= h
-            h /= 2
+            h //= 2
         return arr
 
     # can also do in-place sort
@@ -51,8 +51,8 @@ class Sort():
             length = len(arr)
             if length < 2:
                 return arr
-            left = divide(arr[0:length/2])
-            right = divide(arr[length/2:])
+            left = divide(arr[0:length//2])
+            right = divide(arr[length//2:])
             return merge(left, right)
 
         def merge(arr1, arr2):
@@ -169,7 +169,7 @@ class Test(unittest.TestCase):
     def test_shell_sort(self):
         arr = [1, 2, 4, 7, 6, 3, 3, -3, 3, 3, 5,4,54,3,345,7,22,33,33,44]
         s = Sort()
-        self.assertEqual(sorted(arr), s.shell_sort(arr, len(arr)/2))
+        self.assertEqual(sorted(arr), s.shell_sort(arr, len(arr)//2))
 
     def test_merge_sort(self):
         arr = [1, 2, 4, 7, 6, 3, 3, -3, 3, 3, 5,4,54,3,345,7,22,33,33,44]
